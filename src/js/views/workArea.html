@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.4/ol-debug.css" />
+<div>
+<h2>Workarea with Map - Select Countries</h2>
+<div id="div1">
+
+        <oj-checkboxset id="countriesCheckboxSetId" labelled-by="mainlabelid"  class="oj-choice-direction-row" 
+              value="{{currentCountries}}" on-value-changed="[[selectionListener]]">
+          <oj-option id="uruopt" value="uy">Uruguay</oj-option>
+          <oj-option id="romopt" value="ro">Romania</oj-option>
+          <oj-option id="moropt" value="ma">Morocco</oj-option>
+          <oj-option id="spaopt" value="es">Spain</oj-option>
+          <oj-option id="indopt" value="in">India</oj-option>
+        </oj-checkboxset>
+        <br/>
+        </div>
+<div id="map2" class="map"></div>
+<!--
+<div>
+        <h2>Test Composite</h2>
+        <my-comp badge-name="Duke Mascot" badge-image="/images/duke.png"/>
+      </div>
+</div>
+-->
