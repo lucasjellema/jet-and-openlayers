@@ -37,7 +37,7 @@ define(
             function initMap() {
                 self.elem = document.getElementById("text-input");
                 self.map = new ol.Map({
-                    target: 'map2',
+                    target: 'map',
                     layers: [
                         new ol.layer.Tile({
                             source: new ol.source.OSM()
@@ -50,6 +50,7 @@ define(
                 });
             }
 
+           
             // triggered whenever a checkbox is selected or deselected
             self.selectionListener = function (event) {
                 console.log("Country Selection Changed");
