@@ -1,0 +1,11 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.4/ol-debug.css" />
+<h2>Select Country on Map</h2>
+<div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+    <div id="div1">
+ 
+        <oj-label for="text-input">Country</oj-label>
+        <oj-input-text id="text-input" value="{{selectedCountry}}" on-value-changed="[[countryChangedListener]]"></oj-input-text>
+    </div>
+</div>
+<div id="info"></div>
+<div id="map2" class="map"></div>
