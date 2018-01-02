@@ -5,3 +5,29 @@
     Description:
         This is where any of your application specific styles should be included
 */
+
+.demo-popup {
+    width: 80vw;  
+    height: 80vh; 
+    display: none;
+  } 
+  .demo-popup-body {
+    width: 75vw;  
+    height: 75vh; 
+    display: flex; 
+    flex-direction: column;
+    align-items: stretch;
+  } 
+  .demo-popup-header {
+    align-self: flex-start;
+    margin-bottom: 10px;
+  } 
+  .demo-popup-content {
+    align-self: stretch;
+    overflow: auto;
+    flex-basis: 60vh;
+  } 
+  .demo-popup-footer {
+    align-self: flex-end;
+    margin-top: 10px; 
+  } 

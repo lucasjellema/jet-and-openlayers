@@ -1,5 +1,6 @@
 define(
-    ['ojs/ojcore', 'knockout', 'jquery', 'ol', 'ojs/ojknockout', 'ojs/ojinputtext', 'ojs/ojlabel'],
+    ['ojs/ojcore', 'knockout', 'jquery', 'ol', 'ojs/ojknockout', 'ojs/ojinputtext', 'ojs/ojlabel','ojs/ojbutton',
+    'ojs/ojpopup'],
     function (oj, ko, $, ol) {
         'use strict';
         function MapAreaViewModel() {
@@ -7,10 +8,30 @@ define(
 
             self.selectedCountry = ko.observable("France");
             self.countryChangedListener = function (event) {
-                // self.selectInteraction.getFeatures().clear();
-                // self.setSelectedCountry(self.selectedCountry())                
+              self.selectInteraction.getFeatures().clear();
+              self.setSelectedCountry(self.selectedCountry())                
             }
 
+
+            self.startAnimationListener = function(data, event)
+            {
+             var ui = event.detail;
+             if (!$(event.target).is("#popup1"))
+               return;
+             
+              if ("open" === ui.action)
+              {
+                event.preventDefault();
+                var options = {"direction": "top"};
+                oj.AnimationUtils.slideIn(ui.element, options).then(ui.endCallback);
+                if (!self.map2) initMap();
+              }
+              else if ("close" === ui.action)
+              {
+                event.preventDefault();
+                ui.endCallback();
+              }
+            }   
 
             // define the style to apply to selected countries
             var selectCountryStyle = new ol.style.Style({
@@ -61,7 +82,7 @@ define(
                 // when the document is fully loaded and the DOM has been initialized
                 // then instantiate the map
                 function () {
-                    initMap();
+//                    initMap();
                 })
 
 

@@ -7,5 +7,40 @@
         <oj-input-text id="text-input" value="{{selectedCountry}}" on-value-changed="[[countryChangedListener]]"></oj-input-text>
     </div>
 </div>
-<div id="info"></div>
-<div id="map2" class="map"></div>
+<div id="popupWrapper">
+    <oj-popup class="demo-popup" id="popup1"
+      tail="none" position.my.horizontal="center" position.my.vertical="bottom"
+      position.at.horizontal="center" position.at.vertical="bottom"
+      position.of="window" position.offset.y="-10"
+      modality="modal" 
+      data-bind="event:{'ojAnimateStart': startAnimationListener}">
+        <div class="demo-popup-body">
+          <div class="demo-popup-header"><h5>Select a country by clicking on it</h5></div>
+          <div class="demo-popup-content">
+            <div id="info"></div>
+            <div id="map2" class="map"></div>
+                  </div>
+          <div class="demo-popup-footer">
+              <oj-button id="btnCancel" 
+                 data-bind="click: function()
+                            {
+                              var popup = document.querySelector('#popup1');
+                              popup.close();
+                            }">
+                Cancel
+              </oj-button>
+          </div>
+        </div>    
+    </oj-popup>
+    <oj-button id="btnGo"
+      data-bind="click: function()
+                 {
+                   var popup = document.querySelector('#popup1');
+                   popup.open('#btnGo > button');
+                 }">
+         Go
+    </oj-button>
+  </div>
+
+  
+</div>
