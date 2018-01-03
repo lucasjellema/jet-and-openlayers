@@ -3,15 +3,10 @@
 <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
     <div id="countryInput">
 
-        <oj-label for="text-input">Country</oj-label>
-        <oj-input-text id="text-input" value="{{selectedCountry}}" on-value-changed="[[countryChangedListener]]"
-        help-hints='{"definition":"some value", "source":"some-url"}'
+        <oj-label for="country-input">Country</oj-label>
+        <oj-input-text id="country-input" value="{{selectedCountry}}" on-value-changed="[[countryChangedListener]]"
         ></oj-input-text>
-        <img src="css/images/icon-world.png" class='iconbtnintext' title ="Click to open World Map in Popup" data-bind="click: function()
-        {
-          var popup = document.querySelector('#countrySelectionPopup');
-          popup.open('#btnGo > button');
-        }" /> 
+        <img id="countrySelectorOpen" src="css/images/icon-world.png" class='iconbtnintext' title ="Click to open World Map in Popup" data-bind="click: openPopup" /> 
     </div>
 </div>
 <div id="popupWrapper">

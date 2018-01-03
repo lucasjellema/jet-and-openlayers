@@ -12,6 +12,9 @@ define(
                 self.setSelectedCountry(self.selectedCountry())
             }
 
+            self.openPopup = function () {
+                $('#countrySelectionPopup').ojPopup("open");
+            }
 
             self.startAnimationListener = function (data, event) {
                 var ui = event.detail;
@@ -22,7 +25,7 @@ define(
                     event.preventDefault();
                     var options = { "direction": "top" };
                     oj.AnimationUtils.slideIn(ui.element, options).then(ui.endCallback);
-                    // if the map has not yet been initialized, then do the initialization mow (this is the case the first time the popup opens)
+                    // if the map has not yet been initialized, then do the initialization now (this is the case the first time the popup opens)
                     if (!self.map) initMap();
                 }
                 else if ("close" === ui.action) {
@@ -59,6 +62,9 @@ define(
                 self.selectInteraction.getFeatures().clear();
                 self.selectInteraction.getFeatures().push(selectedFeature);
                 var selectedCountry = { "code": selectedFeature.id_, "name": selectedFeature.values_.name };
+                // TODO find a way to close the popup - when the selected country is the same as was already selected
+                //note: the select event is not fired again if a feature has already been selected; this code is never reached
+                // var close = $("#countrySelectionPopup").ojPopup("close");
                 // set name of selected country on Knock Out Observable
                 self.selectedCountry(selectedCountry.name);
 
