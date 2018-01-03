@@ -32,12 +32,12 @@
     margin-top: 10px; 
   } 
 
-        .btnintext {	
-          position:absolute;
-          cursor:pointer;
-          width:22px;
-          height:23px;
-          margin-left:-24px;
-          padding-top:4px;
-        }
+.iconbtnintext {	
+    position:absolute;
+    cursor:pointer;
+    width:22px;
+    height:23px;
+    margin-left:-24px;
+    padding-top:4px;
+}
 

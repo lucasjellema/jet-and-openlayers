@@ -1,6 +1,6 @@
 define(
-    ['ojs/ojcore', 'knockout', 'jquery', 'ol', 'ojs/ojknockout', 'ojs/ojinputtext', 'ojs/ojlabel','ojs/ojbutton',
-    'ojs/ojpopup'],
+    ['ojs/ojcore', 'knockout', 'jquery', 'ol', 'ojs/ojknockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojbutton',
+        'ojs/ojpopup'],
     function (oj, ko, $, ol) {
         'use strict';
         function MapAreaViewModel() {
@@ -8,30 +8,28 @@ define(
 
             self.selectedCountry = ko.observable("France");
             self.countryChangedListener = function (event) {
-              self.selectInteraction.getFeatures().clear();
-              self.setSelectedCountry(self.selectedCountry())                
+                self.selectInteraction.getFeatures().clear();
+                self.setSelectedCountry(self.selectedCountry())
             }
 
 
-            self.startAnimationListener = function(data, event)
-            {
-             var ui = event.detail;
-             if (!$(event.target).is("#popup1"))
-               return;
-             
-              if ("open" === ui.action)
-              {
-                event.preventDefault();
-                var options = {"direction": "top"};
-                oj.AnimationUtils.slideIn(ui.element, options).then(ui.endCallback);
-                if (!self.map2) initMap();
-              }
-              else if ("close" === ui.action)
-              {
-                event.preventDefault();
-                ui.endCallback();
-              }
-            }   
+            self.startAnimationListener = function (data, event) {
+                var ui = event.detail;
+                if (!$(event.target).is("#countrySelectionPopup"))
+                    return;
+
+                if ("open" === ui.action) {
+                    event.preventDefault();
+                    var options = { "direction": "top" };
+                    oj.AnimationUtils.slideIn(ui.element, options).then(ui.endCallback);
+                    // if the map has not yet been initialized, then do the initialization mow (this is the case the first time the popup opens)
+                    if (!self.map) initMap();
+                }
+                else if ("close" === ui.action) {
+                    event.preventDefault();
+                    ui.endCallback();
+                }
+            }
 
             // define the style to apply to selected countries
             var selectCountryStyle = new ol.style.Style({
@@ -62,8 +60,10 @@ define(
                 self.selectInteraction.getFeatures().push(selectedFeature);
                 var selectedCountry = { "code": selectedFeature.id_, "name": selectedFeature.values_.name };
                 // set name of selected country on Knock Out Observable
-               self.selectedCountry(selectedCountry.name);
+                self.selectedCountry(selectedCountry.name);
+
             });
+
 
             self.setSelectedCountry = function (country) {
                 //programmatic selection of a feature
@@ -72,9 +72,9 @@ define(
                 self.selectInteraction.getFeatures().push(c[0]);
             }
 
-            self.countryChangedListener = function(event) {
+            self.countryChangedListener = function (event) {
                 self.selectInteraction.getFeatures().clear();
-                self.setSelectedCountry(self.selectedCountry())                
+                self.setSelectedCountry(self.selectedCountry())
             }
 
             $(document).ready
@@ -82,7 +82,7 @@ define(
                 // when the document is fully loaded and the DOM has been initialized
                 // then instantiate the map
                 function () {
-//                    initMap();
+                    //                    initMap();
                 })
 
 
@@ -111,7 +111,7 @@ define(
                         self.setSelectedCountry(self.selectedCountry())
                     }
                 });
-                self.map2 = new ol.Map({
+                self.map = new ol.Map({
                     layers: [
                         new ol.layer.Vector({
                             id: "countries",
@@ -127,63 +127,63 @@ define(
                             source: new ol.source.OSM()
                         })
                     ],
-                    target: 'map2',
+                    target: 'mapContainer',
                     view: new ol.View({
                         center: [0, 0],
                         zoom: 2
                     })
                 });
-                self.map2.getInteractions().extend([self.selectInteraction]);
+                self.map.getInteractions().extend([self.selectInteraction]);
 
 
-            // layer to hold (and highlight) currently selected feature(s) 
-            var featureOverlay = new ol.layer.Vector({
-                source: new ol.source.Vector(),
-                map: self.map2,
-                style: new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: '#f00',
-                        width: 1
-                    }),
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255,0,0,0.1)'
+                // layer to hold (and highlight) currently selected feature(s) 
+                var featureOverlay = new ol.layer.Vector({
+                    source: new ol.source.Vector(),
+                    map: self.map,
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: '#f00',
+                            width: 1
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255,0,0,0.1)'
+                        })
                     })
-                })
-            });
-
-            var highlight;
-            var displayFeatureInfo = function (pixel) {
-
-                var feature = self.map2.forEachFeatureAtPixel(pixel, function (feature) {
-                    return feature;
                 });
 
-                var info = document.getElementById('info');
-                if (feature) {
-                    info.innerHTML = feature.getId() + ': ' + feature.get('name');
-                } else {
-                    info.innerHTML = '&nbsp;';
-                }
+                var highlight;
+                var displayFeatureInfo = function (pixel) {
 
-                if (feature !== highlight) {
-                    if (highlight) {
-                        featureOverlay.getSource().removeFeature(highlight);
-                    }
+                    var feature = self.map.forEachFeatureAtPixel(pixel, function (feature) {
+                        return feature;
+                    });
+
+                    var info = document.getElementById('countryInfo');
                     if (feature) {
-                        featureOverlay.getSource().addFeature(feature);
+                        info.innerHTML = feature.getId() + ': ' + feature.get('name');
+                    } else {
+                        info.innerHTML = '&nbsp;';
                     }
-                    highlight = feature;
-                }
 
-            };
+                    if (feature !== highlight) {
+                        if (highlight) {
+                            featureOverlay.getSource().removeFeature(highlight);
+                        }
+                        if (feature) {
+                            featureOverlay.getSource().addFeature(feature);
+                        }
+                        highlight = feature;
+                    }
 
-            self.map2.on('pointermove', function (evt) {
-                if (evt.dragging) {
-                    return;
-                }
-                var pixel = self.map2.getEventPixel(evt.originalEvent);
-                displayFeatureInfo(pixel);
-            });
+                };
+
+                self.map.on('pointermove', function (evt) {
+                    if (evt.dragging) {
+                        return;
+                    }
+                    var pixel = self.map.getEventPixel(evt.originalEvent);
+                    displayFeatureInfo(pixel);
+                });
 
 
             }//initMap

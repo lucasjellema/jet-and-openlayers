@@ -7,28 +7,28 @@
         <oj-input-text id="text-input" value="{{selectedCountry}}" on-value-changed="[[countryChangedListener]]"
         help-hints='{"definition":"some value", "source":"some-url"}'
         ></oj-input-text>
-        <img src="css/images/icon-world.png" class='btnintext' title ="Click to open World Map in Popup" data-bind="click: function()
+        <img src="css/images/icon-world.png" class='iconbtnintext' title ="Click to open World Map in Popup" data-bind="click: function()
         {
-          var popup = document.querySelector('#popup1');
+          var popup = document.querySelector('#countrySelectionPopup');
           popup.open('#btnGo > button');
         }" /> 
     </div>
 </div>
 <div id="popupWrapper">
-    <oj-popup class="demo-popup" id="popup1" tail="none" position.my.horizontal="center" position.my.vertical="bottom" position.at.horizontal="center"
+    <oj-popup class="demo-popup" id="countrySelectionPopup" tail="none" position.my.horizontal="center" position.my.vertical="bottom" position.at.horizontal="center"
         position.at.vertical="bottom" position.of="window" position.offset.y="-10" modality="modal" data-bind="event:{'ojAnimateStart': startAnimationListener}">
         <div class="demo-popup-body">
             <div class="demo-popup-header">
                 <h5>Select a country by clicking on it</h5>
             </div>
             <div class="demo-popup-content">
-                <div id="info"></div>
-                <div id="map2" class="map"></div>
+                <div id="countryInfo"></div>
+                <div id="mapContainer" class="map"></div>
             </div>
             <div class="demo-popup-footer">
-                <oj-button id="btnCancel" data-bind="click: function()
+                <oj-button id="btnClose" data-bind="click: function()
                             {
-                              var popup = document.querySelector('#popup1');
+                              var popup = document.querySelector('#countrySelectionPopup');
                               popup.close();
                             }">
                     Close
